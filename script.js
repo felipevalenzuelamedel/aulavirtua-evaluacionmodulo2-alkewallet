@@ -108,15 +108,7 @@ $(function(){
    arr.forEach(t=>$('#transactionsList').append('<li class="list-group-item">'+t+'</li>'));
  }
 
- if($('#searchContact').length){
-   let contacts=JSON.parse(sessionStorage.getItem('contacts'));
-   $('#searchContact').on('input',function(){
-      let v=$(this).val().toLowerCase();
-      let m=contacts.find(c=>c.toLowerCase().includes(v));
-      if(m) $(this).val(m);
-   });
- }
-});
+ });
 
 function logout() {
 

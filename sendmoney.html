@@ -8,8 +8,10 @@
 <title>Enviar</title></head>
 <body><div class="container mt-4">
     <h2>Enviar Dinero</h2>
-    <input id="contactName" class="form-control mb-2" placeholder="Nombre y apellido">
-    <input id="searchContact" class="form-control mb-2" placeholder="Buscar Contacto">
+    <select id="contactSelect" class="form-select mb-2">
+    <option value="">Seleccione un contacto</option>
+</select>
+<input id="newContact" class="form-control mb-2" placeholder="Nuevo contacto">
     <input id="transferAmount" type="number" class="form-control mb-2" placeholder="Monto">
     <button class="btn btn-primary" onclick="sendMoney()">Agregar contacto y transferir</button>
     <div id="sendMsg"></div>
