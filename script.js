@@ -27,20 +27,76 @@ function deposit(){
  $('#depositMsg').hide().html('Depósito realizado').fadeIn();
 }
 
-function sendMoney(){
- let name=document.getElementById('contactName').value;
- let amount=Number(document.getElementById('transferAmount').value);
- let saldo=Number(sessionStorage.getItem('saldo'));
- if(amount>saldo){$('#sendMsg').html('Saldo insuficiente');return;}
- saldo-=amount;
- sessionStorage.setItem('saldo',saldo);
+function sendMoney() {
 
- let contacts=JSON.parse(sessionStorage.getItem('contacts'));
- contacts.push(name);
- sessionStorage.setItem('contacts',JSON.stringify(contacts));
+    let newContact =
+        document.getElementById("newContact").value.trim();
 
- addTransaction('Transferencia a '+name+': $'+amount);
- $('#sendMsg').hide().html('Transferencia realizada').fadeIn();
+    let selectedContact =
+        document.getElementById("contactSelect").value;
+
+    let contact =
+        newContact || selectedContact;
+
+    let amount =
+        Number(document.getElementById("transferAmount").value);
+
+    let saldo =
+        Number(sessionStorage.getItem("saldo"));
+
+    if (!contact) {
+
+        alert("Debe seleccionar o crear un contacto");
+        return;
+
+    }
+
+    if (amount <= 0) {
+
+        alert("Monto inválido");
+        return;
+
+    }
+
+    if (amount > saldo) {
+
+        alert("Saldo insuficiente");
+        return;
+
+    }
+
+    saldo -= amount;
+
+    sessionStorage.setItem("saldo", saldo);
+
+    let contacts =
+        JSON.parse(sessionStorage.getItem("contacts")) || [];
+
+    if (!contacts.includes(contact)) {
+
+        contacts.push(contact);
+
+        sessionStorage.setItem(
+            "contacts",
+            JSON.stringify(contacts)
+        );
+
+    }
+
+    addTransaction(
+        "Transferencia a " +
+        contact +
+        ": $" +
+        amount
+    );
+
+    $("#sendMsg")
+        .hide()
+        .html("Transferencia realizada correctamente")
+        .fadeIn();
+
+    loadContacts();
+
 }
 
 $(function(){
@@ -70,4 +126,30 @@ function logout() {
     alert("Sesión cerrada correctamente");
 
     window.location.href = "index.html";
+}
+
+function loadContacts() {
+
+    let contacts =
+        JSON.parse(sessionStorage.getItem("contacts")) || [];
+
+    let select =
+        document.getElementById("contactSelect");
+
+    if (!select) return;
+
+    select.innerHTML =
+        '<option value="">Seleccione un contacto</option>';
+
+    contacts.forEach(contact => {
+
+        let option = document.createElement("option");
+
+        option.value = contact;
+        option.textContent = contact;
+
+        select.appendChild(option);
+
+    });
+
 }
